@@ -134,6 +134,14 @@ int main(void)
 	  		  {
 	  			  RPMtoDUTY = MotorSetRPM*(100/MaxRPM);
 	  			  __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,RPMtoDUTY);
+	  			  if (MotorSetRPM > MotorReadRPM)
+	  			  {
+	  				  RPMtoDUTY -= 1;
+	  			  }
+	  			  if (MotorSetRPM < MotorReadRPM)
+	  			  {
+	  				  RPMtoDUTY += 1;
+	  			  }
 	  		  }
 	  	  }
   }
