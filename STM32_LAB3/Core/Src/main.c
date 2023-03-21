@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #define IC_BUFFER_SIZE 20
-#define MaxRPM 15
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,6 +53,7 @@ uint32_t MotorSetRPM = 0;
 uint32_t MotorControlEnable = 0;
 uint32_t MotorReadAverage;
 uint32_t RPMtoDUTY = 0;
+uint32_t MaxRPM = 16;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -137,15 +137,15 @@ int main(void)
 	  		  if (MotorControlEnable == 1) //change RPM
 	  		  {
 	  			  RPMtoDUTY = MotorSetRPM*(100/MaxRPM);
-	  			  __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,RPMtoDUTY);
-	  			  if (MotorSetRPM > MotorReadRPM)
+	  			  if (RPMtoDUTY > 100)
+	  			  {
+	  				  RPMtoDUTY = 100;
+	  			  }
+	  			  if (MotorSetRPM > 4)
 	  			  {
 	  				  RPMtoDUTY -= 10;
 	  			  }
-	  			  if (MotorSetRPM < MotorReadRPM)
-	  			  {
-	  				  RPMtoDUTY += 10;
-	  			  }
+	  			  __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,RPMtoDUTY);
 	  		  }
 	  	  }
   }
